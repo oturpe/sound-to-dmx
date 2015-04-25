@@ -1,0 +1,23 @@
+projectName=sound-to-dmx
+sourceDir=src
+targetDir=target
+mcu=atmega328p
+programmer=arduinoisp
+
+avr-gcc -Os -mmcu=${mcu} -o ${targetDir}/${projectName}.out ${sourceDir}/*.cpp
+if [ $? -ne 0 ]; then
+  echo "Build failed"
+  exit 0
+fi
+
+avr-objcopy -j .text -j .data -O ihex ${targetDir}/${projectName}.out ${targetDir}/${projectName}.hex
+if [ -$? -ne 0 ]; then
+  echo "Hex file generation failed"
+  exit 0
+fi
+
+sudo avrdude -c ${programmer} -p ATmega328P -U flash:w:${targetDir}/${projectName}.hex
+if [ $? -ne 0 ]; then
+  echo "Upload failed"
+  exit 0
+fi
