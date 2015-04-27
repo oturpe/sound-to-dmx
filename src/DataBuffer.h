@@ -1,11 +1,14 @@
 #include <inttypes.h>
 
-/// \class AveragingDataSet
+/// \class DataBuffer
 ///
-/// Buffers number of readings and returns rolling average values. Length of
-/// window to average is given by macŕo AVG_WINDOW
+/// Buffers number of readings and allow querying various statistics of them.
+/// Supported queries are average value calculation and peak to peak amplitude
+/// calculation.
 ///
-class AveragingDataSet {
+/// Buffer size is configurable on buffer initialization. Buffer is cyclic, so
+/// the oldest value is evicted when new one is added.
+class DataBuffer {
 public:
   /// Initializes store by reserving memory for requested bufer size and filling
   /// the whole buffer with given value.
@@ -15,7 +18,7 @@ public:
   ///
   /// \param initialValue
   ///    Initial value
-  AveragingDataSet(uint16_t size, int16_t initialValue);
+  DataBuffer(uint16_t size, int16_t initialValue);
 
   /// Adds given value to dataset. Values must be requested using appropriate
   /// function.

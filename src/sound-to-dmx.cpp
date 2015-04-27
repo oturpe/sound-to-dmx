@@ -6,7 +6,7 @@
 #include "config.h"
 
 #include "Atmega328pUtils.h"
-#include "AveragingDataSet.h"
+#include "DataBuffer.h"
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -85,7 +85,7 @@ int main() {
 
   DDRB |= BV(DDB0);
 
-  AveragingDataSet channel1(AVG_WINDOW, (int16_t)0);
+  DataBuffer channel1(AVG_WINDOW, (int16_t)0);
   while(true) {
     channel1.add(readAnalog());
     int16_t average = channel1.average();

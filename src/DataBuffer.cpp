@@ -3,9 +3,9 @@
 #define __STDC_LIMIT_MACROS
 #include <stdlib.h>
 
-#include "AveragingDataSet.h"
+#include "DataBuffer.h"
 
-AveragingDataSet::AveragingDataSet(uint16_t size, int16_t initialValue)
+DataBuffer::DataBuffer(uint16_t size, int16_t initialValue)
     : size(size), cursor(0) {
   buffer = (int16_t *)malloc(size * sizeof(int16_t));
 
@@ -14,12 +14,12 @@ AveragingDataSet::AveragingDataSet(uint16_t size, int16_t initialValue)
   }
 }
 
-void AveragingDataSet::add(int16_t value) {
+void DataBuffer::add(int16_t value) {
   buffer[cursor] = value;
   cursor = (cursor + 1) % size;
 }
 
-int16_t AveragingDataSet::average() {
+int16_t DataBuffer::average() {
   int32_t sum = 0;
   for (int i = 0; i < size; i++) {
     sum += buffer[i];
@@ -28,7 +28,7 @@ int16_t AveragingDataSet::average() {
   return sum / size;
 }
 
-int16_t AveragingDataSet::peakToPeak() {
+int16_t DataBuffer::peakToPeak() {
   int16_t max = INT16_MIN;
   int16_t min = INT16_MAX;
   for (int i = 0; i < size; i++) {
