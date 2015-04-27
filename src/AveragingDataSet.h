@@ -7,26 +7,22 @@
 ///
 class AveragingDataSet {
 public:
-  /// Initializes store by filling the whole buffer with given value.
+  /// Initializes store by reserving memory for requested bufer size and filling
+  /// the whole buffer with given value.
+  ///
+  /// \param size
+  ///    Buffer size
   ///
   /// \param initialValue
   ///    Initial value
-  AveragingDataSet(uint16_t initialValue);
+  AveragingDataSet(uint16_t size, int16_t initialValue);
 
-  /// Adds given value to dataset. Optionally can return the new rolling
-  /// average.
-  ///
-  /// If return value is not requested, it contains zero.
+  /// Adds given value to dataset. Values must be requested using appropriate
+  /// function.
   ///
   /// \param value
   ///    New value
-  ///
-  /// \param returnNew
-  ///    If new average is returned
-  ///
-  /// \return
-  ///    New rolling average value
-  int16_t add(int16_t value, bool returnNew);
+  void add(int16_t value);
 
   /// Returns current rolling average.
   ///
@@ -34,7 +30,17 @@ public:
   ///    Rolling average value
   int16_t average();
 
+  /// Returns peak to peak amplitude of currently stored values.
+  ///
+  /// \return
+  ///    Peak to peak amplitude
+  int16_t peakToPeak();
+
 private:
-  int16_t buffer[AVG_WINDOW];
+  // Buffer for values
+  int16_t * buffer;
+
+  // Buffer size
+  uint16_t size;
   uint16_t cursor;
 };
