@@ -4,7 +4,7 @@
 
 namespace Atmega328p {
 
-void setTimer0Prescaler(Timer0PrescalerValue value) {
+void setTimer0Prescaler(TimerPrescalerValue value) {
   switch (value) {
   case PSV_1:
     TCCR0B |= BV(CS00);
@@ -20,6 +20,32 @@ void setTimer0Prescaler(Timer0PrescalerValue value) {
     break;
   case PSV_1024:
     TCCR0B |= BV(CS02) | BV(CS00);
+    break;
+  }
+}
+
+void setTimer2Prescaler(TimerPrescalerValue value) {
+  switch (value) {
+  case PSV_1:
+    TCCR2B |= BV(CS20);
+    break;
+  case PSV_8:
+    TCCR2B |= BV(CS21);
+    break;
+  case PSV_32:
+    TCCR2B |= BV(CS21) | BV(CS20);
+    break;
+  case PSV_64:
+    TCCR2B |= BV(CS22);
+    break;
+  case PSV_128:
+    TCCR2B |= BV(CS22) | BV(CS20);
+    break;
+  case PSV_256:
+    TCCR2B |= BV(CS22) | BV(CS21);
+    break;
+  case PSV_1024:
+    TCCR2B |= BV(CS22) | BV(CS21) | BV(CS20);
     break;
   }
 }
