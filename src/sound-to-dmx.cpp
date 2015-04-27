@@ -74,6 +74,30 @@ int16_t readAnalog1() {
   return ADC;
 }
 
+int16_t readAnalog2() {
+  // Select analog input ADC2
+   ADMUX &= ~BV(MUX3) & ~BV(MUX2) & ~BV(MUX0);
+   ADMUX |= BV(MUX1);
+
+  // start conversion and wait until value is available
+  ADCSRA |= BV(ADSC);
+  while(ADCSRA & BV(ADSC));
+
+  return ADC;
+}
+
+int16_t readAnalog3() {
+  // Select analog input ADC3
+   ADMUX &= ~BV(MUX3) & ~BV(MUX2);
+   ADMUX |= BV(MUX1) | BV(MUX0);
+
+  // start conversion and wait until value is available
+  ADCSRA |= BV(ADSC);
+  while(ADCSRA & BV(ADSC));
+
+  return ADC;
+}
+
 /// Limits give value by given minimum and maximum values.
 ///
 /// \param value
@@ -105,27 +129,35 @@ int main() {
 
   DataBuffer channel1(AVG_WINDOW, (int16_t)0);
   DataBuffer channel2(AVG_WINDOW, (int16_t)0);
+  DataBuffer channel3(AVG_WINDOW, (int16_t)0);
+  DataBuffer channel4(AVG_WINDOW, (int16_t)0);
   while(true) {
     channel1.add(readAnalog0());
     channel2.add(readAnalog1());
+    channel3.add(readAnalog2());
+    channel4.add(readAnalog3());
 
-    int16_t average = channel1.average();
-    int16_t peakToPeak = channel1.peakToPeak();
+    int16_t peakToPeak1 = channel1.peakToPeak();
     int16_t peakToPeak2 = channel2.peakToPeak();
+    int16_t peakToPeak3 = channel3.peakToPeak();
+    int16_t peakToPeak4 = channel4.peakToPeak();
 
     //Testing: show values as pwm
-    int16_t averageOutput = (average-OFFSET_AVG_1)*SCALE_AVG_1;
-    averageOutput = limit(averageOutput, 0, 255);
-    OCR0A = averageOutput;
 
-    int16_t peakOutput = (peakToPeak-OFFSET_PEAK_1)*SCALE_PEAK_1;
-    peakOutput = limit(peakOutput, 0, 255);
-    OCR0B = peakOutput;
+    int16_t peakOutput1 = (peakToPeak1-OFFSET_PEAK_1)*SCALE_PEAK_1;
+    peakOutput1 = limit(peakOutput1, 0, 255);
+    OCR0A = peakOutput1;
 
     int16_t peakOutput2 = (peakToPeak2-OFFSET_PEAK_2)*SCALE_PEAK_2;
     peakOutput2 = limit(peakOutput2, 0, 255);
-    OCR2A = peakOutput2;
+    OCR0B = peakOutput2;
 
-    OCR2B = peakOutput2;
+    int16_t peakOutput3 = (peakToPeak3-OFFSET_PEAK_3)*SCALE_PEAK_3;
+    peakOutput3 = limit(peakOutput3, 0, 255);
+    OCR2A = peakOutput3;
+
+    int16_t peakOutput4 = (peakToPeak4-OFFSET_PEAK_4)*SCALE_PEAK_4;
+    peakOutput4 = limit(peakOutput4, 0, 255);
+    OCR2B = peakOutput4;
   }
 }

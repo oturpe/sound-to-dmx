@@ -16,3 +16,9 @@
 
 #define OFFSET_PEAK_2 50
 #define SCALE_PEAK_2 1
+
+#define OFFSET_PEAK_3 50
+#define SCALE_PEAK_3 1
+
+#define OFFSET_PEAK_4 50
+#define SCALE_PEAK_4 1
