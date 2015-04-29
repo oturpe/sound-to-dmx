@@ -97,7 +97,7 @@ int16_t readAnalog3() {
 void initializeDmx() {
   Atmega328p::setTimer2Prescaler(DMX_PRESCALER);
   sei();
-  DmxSimple.maxChannel(3);
+  DmxSimple.maxChannel(1);
 }
 
 /// Limits give value by given minimum and maximum values.
@@ -160,15 +160,12 @@ int main() {
 
     int16_t peakOutput1 = (peakToPeak1-OFFSET_PEAK_1)*SCALE_PEAK_1;
     peakOutput1 = limit(peakOutput1, 0, 255);
-    if(peakOutput1 > 100) {
-      DmxSimple.write(1, peakOutput1);
-      DmxSimple.write(2, peakOutput1);
-      DmxSimple.write(3, peakOutput1);
-    } else {
-      DmxSimple.write(1, 0);
-      DmxSimple.write(2, 0);
-      DmxSimple.write(3, 0);
-    }
+    DmxSimple.write(1, peakOutput1);
+    #ifdef DEBUG
+      if(peakOutput1 > 100) {
+        PORTD &= ~BV(PORTD2);
+      }
+    #endif
 
     //Testing: show values as pwm
 
@@ -186,13 +183,5 @@ int main() {
     peakOutput4 = limit(peakOutput4, 0, 255);
     OCR2B = peakOutput4;
     */
-
-    #ifdef DEBUG
-      if(peakOutput4 > 100) {
-      PORTD |= BV(PORTD2);
-      } else {
-        PORTD &= ~BV(PORTD2);
-      }
-    #endif
   }
 }
