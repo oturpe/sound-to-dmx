@@ -5,6 +5,10 @@ targetDir=target
 mcu=atmega328p
 programmer=arduinoisp
 
+if [ ! -e ${targetDir} ]; then
+  mkdir ${targetDir}
+fi
+
 avr-gcc -Os -mmcu=${mcu} -o ${targetDir}/${projectName}.out ${sourceDir}/*.cpp ${libDir}/*.cpp
 if [ $? -ne 0 ]; then
   echo "Build failed"
