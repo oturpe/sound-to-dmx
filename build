@@ -1,10 +1,11 @@
 projectName=sound-to-dmx
 sourceDir=src
+libDir=src/lib/DmxSimple
 targetDir=target
 mcu=atmega328p
 programmer=arduinoisp
 
-avr-gcc -Os -mmcu=${mcu} -o ${targetDir}/${projectName}.out ${sourceDir}/*.cpp
+avr-gcc -Os -mmcu=${mcu} -o ${targetDir}/${projectName}.out ${sourceDir}/*.cpp ${libDir}/*.cpp
 if [ $? -ne 0 ]; then
   echo "Build failed"
   exit 0

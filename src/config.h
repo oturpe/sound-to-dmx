@@ -5,8 +5,11 @@
 
 #define ADC_PRESCALER Atmega328p::ADC_PSV_32
 
-// Testing
 #define PWM_PRESCALER Atmega328p::PSV_1
+
+#define DMX_PRESCALER Atmega328p::PSV_128
+#define DMX_PORT PORTB
+#define DMX_PIN PORTB1
 
 #define OFFSET_AVG_1 509
 #define SCALE_AVG_1 32
@@ -22,3 +25,6 @@
 
 #define OFFSET_PEAK_4 50
 #define SCALE_PEAK_4 1
+
+//Enables debug messaging
+#define DEBUG
